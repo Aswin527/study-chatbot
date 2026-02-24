@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Study Helper Bot</title>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 40px;
+        }
+        input {
+            width: 60%;
+            padding: 10px;
+        }
+        button {
+            padding: 10px 15px;
+        }
+        #response {
+            margin-top: 20px;
+            white-space: pre-wrap;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+
+<h2>📚 Study Helper Bot</h2>
+
+<input id="question" placeholder="Ask your doubt..." />
+<button onclick="ask()">Ask</button>
+
+<div id="response"></div>
+
+<script>
+async function ask() {
+    const message = document.getElementById("question").value;
+
+    const res = await fetch("http://127.0.0.1:8000/chat", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ message })
+    });
+
+    const data = await res.json();
+    document.getElementById("response").innerHTML = marked.parse(data.reply);
+}
+</script>
+
+</body>
+</html>
